@@ -3,27 +3,26 @@ import java.util.Scanner;
 public class MainMenu {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Slang Dictionary"
-                + "\n----------------"
-                + "\n1. Search by slang word"
-                + "\n2. Search by definition"
-                + "\n3. Show slang search history"
-                + "\n4. Add a slang word"
-                + "\n5. Edit a slang word"
-                + "\n6. Delete a slang word"
-                + "\n7. Reset default slang words list"
-                + "\n8. On this day slang word (random)"
-                + "\n9. Quiz (random slang)"
-                + "\n10. Quiz (random definition)"
-                + "\n11. Quit"
-                + "\n----------------");
-        System.out.print("Choose your option by type in the number: ");
+        Features ft = new Features(sc);
         while (true) {
+            System.out.println("Slang Dictionary"
+                    + "\n----------------"
+                    + "\n1. Search by slang word"
+                    + "\n2. Search by definition"
+                    + "\n3. Show slang search history"
+                    + "\n4. Add a slang word"
+                    + "\n5. Edit a slang word"
+                    + "\n6. Delete a slang word"
+                    + "\n7. Reset default slang words list"
+                    + "\n8. On this day slang word (random)"
+                    + "\n9. Quiz (random slang)"
+                    + "\n10. Quiz (random definition)"
+                    + "\n11. Quit"
+                    + "\n----------------");
+            System.out.print("Choose your option by type in the number: ");
             String option = sc.nextLine();
             try {
                 Integer optionInteger = Integer.parseInt(option);
-                // !!Line below is for testing only. Further removal is needed.
-                System.out.println("Your choice is: " + optionInteger);
                 switch (optionInteger) {
                     case 1:
                         // TODO: implement search by slang word
@@ -56,17 +55,17 @@ public class MainMenu {
                         // TODO: implement quiz (random definition)
                         break;
                     case 11:
+                        sc.close();
+                        System.out.println("See you next time!");
                         return;
                     default:
                         System.out.print("Input must be from 1 to 10.\nPlease type in again: ");
                         continue;
                 }
-                break;
             } catch (Exception e) {
+                System.out.print(e);
                 System.out.print("Wrong input.\nPlease type in again: ");
             }
         }
-
-        sc.close();
     }
 }
