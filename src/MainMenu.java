@@ -32,7 +32,7 @@ public class MainMenu {
                         ft.searchByDefinition(sc);
                         break;
                     case 3:
-                        // TODO: implement show slang search by history
+                        ft.showSearchHistory(sc);
                         break;
                     case 4:
                         // TODO: implement add a slang word
@@ -57,6 +57,7 @@ public class MainMenu {
                         break;
                     case 11:
                         sc.close();
+                        ft.writeSearchHistory();
                         System.out.println("See you next time!");
                         return;
                     default:

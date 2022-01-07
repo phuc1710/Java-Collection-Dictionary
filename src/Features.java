@@ -4,9 +4,19 @@ import java.util.*;
 public class Features {
     private TreeMap<String, String> slangList;
     private ArrayList<String> history;
+    private int historyCount = 20;
 
     @SuppressWarnings("unchecked")
     public Features(Scanner sc) {
+        // load history
+        try {
+            ObjectInputStream ooi = new ObjectInputStream(new FileInputStream("history.txt"));
+            this.history = (ArrayList<String>) ooi.readObject();
+            ooi.close();
+        } catch (Exception e) {
+            this.history = new ArrayList<String>();
+        }
+        // load index
         try {
             ObjectInputStream ooi = new ObjectInputStream(new FileInputStream("indexed-slang.txt"));
             this.slangList = (TreeMap<String, String>) ooi.readObject();
@@ -92,13 +102,16 @@ public class Features {
                 System.out.print("------------------------------------------------------"
                         + "\nInput a number from above list to show its definition: ");
                 input = sc.nextLine();
-                while (slangList.get(input.toUpperCase()) == null) {
+                while (slangList.get(wordArray.get(avg + Integer.parseInt(input) - 1)) == null) {
                     System.out.print("Wrong input.\nPlease type in again: ");
                     input = sc.nextLine();
                 }
                 System.out.println("Slang: " + wordArray.get(Integer.parseInt(input) - 1)
                         + "\nDefinition: " + this.slangList.get(wordArray.get(Integer.parseInt(input) - 1)));
                 this.history.add(wordArray.get(Integer.parseInt(input) - 1));
+                // limit the history to most recent searches
+                if (this.history.size() > this.historyCount)
+                    this.history.remove(0);
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to search more? (Y/N): ");
@@ -123,7 +136,7 @@ public class Features {
                         + "\nDefinition not found");
             else {
                 System.out.println("--------------------------------------------------"
-                        + "\nFound slangs with has above keyword in definition:");
+                        + "\nFound slangs which has above keyword in definition:");
                 for (int i = 0; i < found.size(); ++i)
                     System.out.println((i + 1) + ". " + found.get(i));
                 System.out.print("--------------------------------------------------"
@@ -136,10 +149,50 @@ public class Features {
                 System.out.println("Slang: " + wordArray.get(Integer.parseInt(input) - 1)
                         + "\nDefinition: " + this.slangList.get(wordArray.get(Integer.parseInt(input) - 1)));
                 this.history.add(wordArray.get(Integer.parseInt(input) - 1));
+                // limit the history to most recent searches
+                if (this.history.size() > this.historyCount)
+                    this.history.remove(0);
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to search more? (Y/N): ");
             choice = sc.nextLine().toUpperCase();
+        }
+    }
+
+    public void showSearchHistory(Scanner sc) {
+        String choice = "Y";
+        while (choice.equals("Y")) {
+            if (this.history.size() == 0)
+                System.out.println("------------------"
+                        + "\nNo search history");
+            else {
+                System.out.println("--------------------------------------------------"
+                        + "\n" + historyCount + " most recent slang searches:");
+                for (int i = 0; i < this.history.size(); ++i)
+                    System.out.println((i + 1) + ". " + this.slangList.get(this.history.get(i)));
+                System.out.print("--------------------------------------------------"
+                        + "\nInput a number from above list to show its definition: ");
+                String input = sc.nextLine();
+                while (this.slangList.get(this.history.get(Integer.parseInt(input) - 1)) == null) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                    input = sc.nextLine();
+                }
+                System.out.println("Slang: " + this.history.get(Integer.parseInt(input) - 1)
+                        + "\nDefinition: " + this.slangList.get(this.history.get(Integer.parseInt(input) - 1)));
+            }
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to show definition again? (Y/N): ");
+            choice = sc.nextLine().toUpperCase();
+        }
+    }
+
+    public void writeSearchHistory() {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("history.txt"));
+            oos.writeObject(this.history);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println("There\'s some error");
         }
     }
 }
