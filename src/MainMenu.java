@@ -53,7 +53,7 @@ public class MainMenu {
                         ft.quizRandomSlang(sc);
                         break;
                     case 10:
-                        // TODO: implement quiz (random definition)
+                        ft.quizRandomDefinition(sc);
                         break;
                     case 11:
                         sc.close();
