@@ -179,9 +179,16 @@ public class Features {
                 System.out.print("--------------------------------------------------"
                         + "\nInput a number from above list to show its definition: ");
                 String input = sc.nextLine();
-                while (this.slangList.get(this.history.get(Integer.parseInt(input) - 1)) == null) {
-                    System.out.print("Wrong input.\nPlease type in again: ");
-                    input = sc.nextLine();
+                while (true) {
+                    if (this.slangList.get(this.history.get(Integer.parseInt(input) - 1)) == null) {
+                        if (Integer.parseInt(input) - 1 >= 0 && Integer.parseInt(input) - 1 <= this.history.size()) {
+                            System.out.print("This word may have been deleted or resetted.");
+                            break;
+                        } else {
+                            System.out.print("Wrong input.\nPlease type in again: ");
+                            input = sc.nextLine();
+                        }
+                    }
                 }
                 System.out.println("Slang: " + this.history.get(Integer.parseInt(input) - 1)
                         + "\nDefinition: " + this.slangList.get(this.history.get(Integer.parseInt(input) - 1)));
