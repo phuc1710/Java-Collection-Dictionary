@@ -25,7 +25,7 @@ public class MainMenu {
                 Integer optionInteger = Integer.parseInt(option);
                 switch (optionInteger) {
                     case 1:
-                        // TODO: implement search by slang word
+                        ft.searchBySlang(sc);
                         break;
                     case 2:
                         // TODO: implement search by definition
