@@ -3,10 +3,10 @@ import java.util.*;
 
 public class Features {
     private TreeMap<String, String> slangList;
+    private ArrayList<String> history;
 
     @SuppressWarnings("unchecked")
     public Features(Scanner sc) {
-        this.slangList = new TreeMap<String, String>();
         try {
             ObjectInputStream ooi = new ObjectInputStream(new FileInputStream("indexed-slang.txt"));
             this.slangList = (TreeMap<String, String>) ooi.readObject();
@@ -29,6 +29,7 @@ public class Features {
                 }
             }
             try {
+                this.slangList = new TreeMap<String, String>();
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
                 String line = br.readLine();
                 String word;
@@ -57,7 +58,7 @@ public class Features {
         String choice = "Y";
         while (choice.equals("Y")) {
             System.out.print("-------------------------"
-                + "\nInput a slang to search: ");
+                    + "\nInput a slang to search: ");
             String input = sc.nextLine().toUpperCase();
             Set<String> wordSet = this.slangList.keySet();
             ArrayList<String> wordArray = new ArrayList<String>(wordSet);
@@ -74,26 +75,30 @@ public class Features {
             }
             if (max - min == 1)
                 System.out.println("----------------"
-                    + "\nSlang not found.");
+                        + "\nSlang not found.");
             else {
                 // loop to the beginning word that start with input
                 while (wordArray.get(avg).startsWith(input))
                     --avg;
                 ++avg;
                 System.out.println("---------------"
-                    + "\nFound slangs:");
+                        + "\nFound slangs:");
+                int i = 1;
                 while (wordArray.get(avg).startsWith(input)) {
-                    System.out.println(wordArray.get(avg));
+                    System.out.println(i + ". " + wordArray.get(avg));
                     ++avg;
+                    ++i;
                 }
                 System.out.print("------------------------------------------------------"
-                    + "\nInput a slang from above list to show its definition: ");
+                        + "\nInput a number from above list to show its definition: ");
                 input = sc.nextLine();
                 while (slangList.get(input.toUpperCase()) == null) {
                     System.out.print("Wrong input.\nPlease type in again: ");
                     input = sc.nextLine();
                 }
-                System.out.println("Definition: " + this.slangList.get(input.toUpperCase()));
+                System.out.println("Slang: " + wordArray.get(Integer.parseInt(input) - 1)
+                        + "\nDefinition: " + this.slangList.get(wordArray.get(Integer.parseInt(input) - 1)));
+                this.history.add(wordArray.get(Integer.parseInt(input) - 1));
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to search more? (Y/N): ");
@@ -105,32 +110,32 @@ public class Features {
         String choice = "Y";
         while (choice.equals("Y")) {
             System.out.print("-------------------------"
-                + "\nInput a definition to search: ");
+                    + "\nInput a definition to search: ");
             String input = sc.nextLine().toLowerCase();
-            TreeMap<String, String> found = new TreeMap<String, String>();
+            ArrayList<String> found = new ArrayList<String>();
             Set<String> wordSet = this.slangList.keySet();
             ArrayList<String> wordArray = new ArrayList<String>(wordSet);
             for (int i = 0; i < this.slangList.size(); ++i)
-                if (this.slangList.get(wordArray.get(i)).toLowerCase().startsWith(input))
-                    found.put(this.slangList.get(wordArray.get(i)), wordArray.get(i));
+                if (this.slangList.get(wordArray.get(i)).toLowerCase().contains(input))
+                    found.add(wordArray.get(i));
             if (found.size() == 0)
                 System.out.println("------------------"
-                    + "\nDefinition not found");
+                        + "\nDefinition not found");
             else {
-                System.out.println("---------------"
-                    + "\nFound definition:");
-                Set<String> defSet = found.keySet();
-                ArrayList<String> defArray = new ArrayList<String>(defSet);
+                System.out.println("--------------------------------------------------"
+                        + "\nFound slangs with has above keyword in definition:");
                 for (int i = 0; i < found.size(); ++i)
-                    System.out.println((i + 1) + ". " + defArray.get(i));
+                    System.out.println((i + 1) + ". " + found.get(i));
                 System.out.print("--------------------------------------------------"
-                    + "\nInput a number from above list to show its slang: ");
+                        + "\nInput a number from above list to show its definition: ");
                 input = sc.nextLine();
-                while (defArray.get(Integer.parseInt(input) - 1) == null) {
+                while (this.slangList.get(wordArray.get(Integer.parseInt(input) - 1)) == null) {
                     System.out.print("Wrong input.\nPlease type in again: ");
                     input = sc.nextLine();
                 }
-                System.out.println("Slang: " + found.get(defArray.get(Integer.parseInt(input) - 1)));
+                System.out.println("Slang: " + wordArray.get(Integer.parseInt(input) - 1)
+                        + "\nDefinition: " + this.slangList.get(wordArray.get(Integer.parseInt(input) - 1)));
+                this.history.add(wordArray.get(Integer.parseInt(input) - 1));
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to search more? (Y/N): ");
