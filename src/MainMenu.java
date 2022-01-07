@@ -35,7 +35,7 @@ public class MainMenu {
                         ft.showSearchHistory(sc);
                         break;
                     case 4:
-                        // TODO: implement add a slang word
+                        ft.addSlang(sc);
                         break;
                     case 5:
                         // TODO: implement edit a slang word
@@ -58,6 +58,7 @@ public class MainMenu {
                     case 11:
                         sc.close();
                         ft.writeSearchHistory();
+                        ft.writeSlangList();
                         System.out.println("See you next time!");
                         return;
                     default:
