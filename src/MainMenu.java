@@ -38,7 +38,7 @@ public class MainMenu {
                         ft.addSlang(sc);
                         break;
                     case 5:
-                        // TODO: implement edit a slang word
+                        ft.editSlang(sc);
                         break;
                     case 6:
                         // TODO: implement delete a slang word

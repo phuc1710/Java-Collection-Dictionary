@@ -103,7 +103,7 @@ public class Features {
                 System.out.print("------------------------------------------------------"
                         + "\nInput a number from above list to show its definition: ");
                 input = sc.nextLine();
-                while (slangList.get(wordArray.get(startList + Integer.parseInt(input))) == null) {
+                while (this.slangList.get(wordArray.get(startList + Integer.parseInt(input))) == null) {
                     System.out.print("Wrong input.\nPlease type in again: ");
                     input = sc.nextLine();
                 }
@@ -197,7 +197,7 @@ public class Features {
             String input = sc.nextLine().toUpperCase();
             if (this.slangList.get(input) != null) {
                 System.out.println("----------------------------------------"
-                        + "\nSlang found in list. Choose your option:"
+                        + "\nSlang found in list. Here's your option:"
                         + "\n1. Overwrite existing slang"
                         + "\n2. Duplicate to a new slang with new definition"
                         + "\n----------------------------------------");
@@ -234,6 +234,90 @@ public class Features {
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to add more? (Y/N): ");
+            choice = sc.nextLine().toUpperCase();
+        }
+    }
+
+    public void editSlang(Scanner sc) {
+        String choice = "Y";
+        while (choice.equals("Y")) {
+            System.out.print("-------------------------"
+                    + "\nInput a slang to search: ");
+            String input = sc.nextLine().toUpperCase();
+            Set<String> wordSet = this.slangList.keySet();
+            ArrayList<String> wordArray = new ArrayList<String>(wordSet);
+            // implement binary search
+            int min = 0, max = wordArray.size() - 1, avg = 0;
+            while (max - min > 1) {
+                avg = Math.floorDiv(max + min, 2);
+                if (wordArray.get(avg).startsWith(input))
+                    break;
+                else if (wordArray.get(avg).compareTo(input) > 0)
+                    max = avg;
+                else if (wordArray.get(avg).compareTo(input) < 0)
+                    min = avg;
+            }
+            if (max - min == 1)
+                System.out.println("----------------"
+                        + "\nSlang not found.");
+            else {
+                // loop to the beginning word that start with input
+                while (wordArray.get(avg).startsWith(input))
+                    --avg;
+                ++avg;
+                System.out.println("---------------"
+                        + "\nFound slangs:");
+                int i = 1;
+                int startList = avg;
+                while (wordArray.get(avg).startsWith(input)) {
+                    System.out.println(i + ". " + wordArray.get(avg));
+                    ++avg;
+                    ++i;
+                }
+                System.out.print("------------------------------------------------------"
+                        + "\nInput a number from above list to show its definition and edit: ");
+                input = sc.nextLine();
+                while (this.slangList.get(wordArray.get(startList + Integer.parseInt(input))) == null) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                    input = sc.nextLine();
+                }
+                System.out.println("Slang: " + wordArray.get(startList + Integer.parseInt(input) - 1)
+                        + "\nDefinition: "
+                        + this.slangList.get(wordArray.get(startList + Integer.parseInt(input) - 1)));
+                System.out.println("------------------------------"
+                        + "\nHere's your option:"
+                        + "\n1. Edit slang"
+                        + "\n2. Edit slang's definition"
+                        + "\n------------------------------");
+                System.out.print("Choose your option by type in the number: ");
+                String option = sc.nextLine();
+                try {
+                    Integer optionInteger = Integer.parseInt(option);
+                    switch (optionInteger) {
+                        case 1:
+                            System.out.print("Input new slang for the selected slang: ");
+                            String newSlang = sc.nextLine();
+                            String oldDef = this.slangList.get(wordArray.get(startList + Integer.parseInt(input) - 1));
+                            this.slangList.remove(wordArray.get(startList + Integer.parseInt(input) - 1));
+                            this.slangList.put(newSlang, oldDef);
+                            System.out.println("Edited successfully!");
+                            break;
+                        case 2:
+                            System.out.print("Input new definition for the selected slang: ");
+                            String newDef = sc.nextLine();
+                            this.slangList.replace(wordArray.get(startList + Integer.parseInt(input) - 1), newDef);
+                            System.out.println("Edited successfully!");
+                            break;
+                        default:
+                            System.out.print("Input must be from 1 to 2.\nPlease add again!");
+                            continue;
+                    }
+                } catch (Exception e) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                }
+            }
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to edit more? (Y/N): ");
             choice = sc.nextLine().toUpperCase();
         }
     }
