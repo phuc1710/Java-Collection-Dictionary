@@ -8,7 +8,9 @@ public class Features {
     private ArrayList<String> history;
     private int historyCount = 20;
 
+    // !Referenced code
     @SuppressWarnings("unchecked")
+
     public Features(Scanner sc) {
         // load history
         try {
@@ -426,8 +428,10 @@ public class Features {
     }
 
     public void randomSlangWordByDay() {
+        // !Referenced code
         Clock clock = Clock.systemDefaultZone();
         LocalDate localDate = LocalDate.now(clock);
+
         Random generator = new Random(localDate.getLong(ChronoField.EPOCH_DAY));
         int slangIndex = generator.nextInt(this.slangList.size() - 1);
         Set<String> wordSet = this.slangList.keySet();
@@ -437,6 +441,56 @@ public class Features {
                 + "\nDefinition: "
                 + this.slangList.get(wordArray.get(slangIndex))
                 + "\n------------------------------");
+    }
+
+    public void quizRandomSlang(Scanner sc) {
+        String choice = "Y";
+        while (choice.equals("Y")) {
+            Random generator = new Random();
+            int slangIndex = generator.nextInt(this.slangList.size() - 1);
+            Set<String> wordSet = this.slangList.keySet();
+            ArrayList<String> wordArray = new ArrayList<String>(wordSet);
+            ArrayList<String> answer = new ArrayList<String>();
+            answer.add(this.slangList.get(wordArray.get(slangIndex)));
+            answer.add(this.slangList.get(wordArray.get(generator.nextInt(this.slangList.size() - 1))));
+            answer.add(this.slangList.get(wordArray.get(generator.nextInt(this.slangList.size() - 1))));
+            answer.add(this.slangList.get(wordArray.get(generator.nextInt(this.slangList.size() - 1))));
+            // !Referenced code
+            Collections.shuffle(answer);
+
+            System.out.println("-------------------------------"
+                    + "\n|         SLANG QUIZ          |"
+                    + "\n-------------------------------"
+                    + "\nChoose the definition for this slang: " + wordArray.get(slangIndex)
+                    + "\n------------------------------"
+                    + "\n1. " + answer.get(0)
+                    + "\n2. " + answer.get(1)
+                    + "\n3. " + answer.get(2)
+                    + "\n4. " + answer.get(3)
+                    + "\n------------------------------");
+            System.out.print("Choose your answer by type in the number: ");
+            String option;
+            while (true) {
+                option = sc.nextLine();
+                try {
+                    if (answer.get(Integer.parseInt(option) - 1)
+                            .equals(this.slangList.get(wordArray.get(slangIndex)))) {
+                        System.out.println("Correct answer! Congratulations!");
+                        break;
+                    } else {
+                        System.out.println(
+                                "Wrong answer! The correct answer is: "
+                                        + this.slangList.get(wordArray.get(slangIndex)));
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                }
+            }
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to play more? (Y/N): ");
+            choice = sc.nextLine().toUpperCase();
+        }
     }
 
     public void writeSearchHistory() {

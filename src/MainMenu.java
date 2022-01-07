@@ -50,7 +50,7 @@ public class MainMenu {
                         ft.randomSlangWordByDay();
                         break;
                     case 9:
-                        // TODO: implement quiz (random slang)
+                        ft.quizRandomSlang(sc);
                         break;
                     case 10:
                         // TODO: implement quiz (random definition)
