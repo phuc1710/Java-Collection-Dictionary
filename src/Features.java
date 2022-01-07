@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.time.*;
+import java.time.temporal.ChronoField;
 
 public class Features {
     private TreeMap<String, String> slangList;
@@ -421,6 +423,20 @@ public class Features {
         } catch (IOException e) {
             System.out.println("Error while reading file.");
         }
+    }
+
+    public void randomSlangWordByDay() {
+        Clock clock = Clock.systemDefaultZone();
+        LocalDate localDate = LocalDate.now(clock);
+        Random generator = new Random(localDate.getLong(ChronoField.EPOCH_DAY));
+        int slangIndex = generator.nextInt(this.slangList.size() - 1);
+        Set<String> wordSet = this.slangList.keySet();
+        ArrayList<String> wordArray = new ArrayList<String>(wordSet);
+        System.out.println("------------------------------"
+                + "\nSlang of the day: " + wordArray.get(slangIndex)
+                + "\nDefinition: "
+                + this.slangList.get(wordArray.get(slangIndex))
+                + "\n------------------------------");
     }
 
     public void writeSearchHistory() {

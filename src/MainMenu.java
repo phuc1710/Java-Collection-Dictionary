@@ -47,7 +47,7 @@ public class MainMenu {
                         ft.resetSlangList(sc);
                         break;
                     case 8:
-                        // TODO: implement on this day slang word (random)
+                        ft.randomSlangWordByDay();
                         break;
                     case 9:
                         // TODO: implement quiz (random slang)
