@@ -242,7 +242,7 @@ public class Features {
         String choice = "Y";
         while (choice.equals("Y")) {
             System.out.print("-------------------------"
-                    + "\nInput a slang to search: ");
+                    + "\nInput a slang to edit: ");
             String input = sc.nextLine().toUpperCase();
             Set<String> wordSet = this.slangList.keySet();
             ArrayList<String> wordArray = new ArrayList<String>(wordSet);
@@ -318,6 +318,66 @@ public class Features {
             }
             System.out.print("-----------------------------------"
                     + "\nDo you want to edit more? (Y/N): ");
+            choice = sc.nextLine().toUpperCase();
+        }
+    }
+
+    public void deleteSlang(Scanner sc) {
+        String choice = "Y";
+        while (choice.equals("Y")) {
+            System.out.print("-------------------------"
+                    + "\nInput a slang to delete: ");
+            String input = sc.nextLine().toUpperCase();
+            Set<String> wordSet = this.slangList.keySet();
+            ArrayList<String> wordArray = new ArrayList<String>(wordSet);
+            // implement binary search
+            int min = 0, max = wordArray.size() - 1, avg = 0;
+            while (max - min > 1) {
+                avg = Math.floorDiv(max + min, 2);
+                if (wordArray.get(avg).startsWith(input))
+                    break;
+                else if (wordArray.get(avg).compareTo(input) > 0)
+                    max = avg;
+                else if (wordArray.get(avg).compareTo(input) < 0)
+                    min = avg;
+            }
+            if (max - min == 1)
+                System.out.println("----------------"
+                        + "\nSlang not found.");
+            else {
+                // loop to the beginning word that start with input
+                while (wordArray.get(avg).startsWith(input))
+                    --avg;
+                ++avg;
+                System.out.println("---------------"
+                        + "\nFound slangs:");
+                int i = 1;
+                int startList = avg;
+                while (wordArray.get(avg).startsWith(input)) {
+                    System.out.println(i + ". " + wordArray.get(avg));
+                    ++avg;
+                    ++i;
+                }
+                System.out.print("------------------------------------------------------"
+                        + "\nInput a number from above list to show its definition and delete: ");
+                input = sc.nextLine();
+                while (this.slangList.get(wordArray.get(startList + Integer.parseInt(input))) == null) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                    input = sc.nextLine();
+                }
+                System.out.println("Slang: " + wordArray.get(startList + Integer.parseInt(input) - 1)
+                        + "\nDefinition: "
+                        + this.slangList.get(wordArray.get(startList + Integer.parseInt(input) - 1)));
+                System.out.println("--------------------------------------------------"
+                        + "\nDo you really sure you want to DELETE this slang? (Y/N)"
+                        + "\n--------------------------------------------------");
+                System.out.print("Choose your option by type in Y or N: ");
+                String option = sc.nextLine().toUpperCase();
+                if (option.equals("Y"))
+                    this.slangList.remove(wordArray.get(startList + Integer.parseInt(input) - 1));
+            }
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to delete more? (Y/N): ");
             choice = sc.nextLine().toUpperCase();
         }
     }
