@@ -35,7 +35,7 @@ public class Features {
                 String meaning;
                 while (line != null) {
                     word = line.substring(0, line.indexOf('`'));
-                    meaning = line.substring(line.indexOf('`') + 1, line.length() - 1);
+                    meaning = line.substring(line.indexOf('`') + 1, line.length());
                     this.slangList.put(word, meaning);
                     line = br.readLine();
                 }
@@ -56,7 +56,8 @@ public class Features {
     public void searchBySlang(Scanner sc) {
         String choice = "Y";
         while (choice.equals("Y")) {
-            System.out.print("Input a slang to search: ");
+            System.out.print("-------------------------"
+                + "\nInput a slang to search: ");
             String input = sc.nextLine().toUpperCase();
             Set<String> wordSet = this.slangList.keySet();
             ArrayList<String> wordArray = new ArrayList<String>(wordSet);
@@ -72,26 +73,67 @@ public class Features {
                     min = avg;
             }
             if (max - min == 1)
-                System.out.println("Slang not found.");
+                System.out.println("----------------"
+                    + "\nSlang not found.");
             else {
                 // loop to the beginning word that start with input
                 while (wordArray.get(avg).startsWith(input))
                     --avg;
                 ++avg;
-                System.out.println("Found slangs:");
+                System.out.println("---------------"
+                    + "\nFound slangs:");
                 while (wordArray.get(avg).startsWith(input)) {
                     System.out.println(wordArray.get(avg));
                     ++avg;
                 }
-                System.out.print("Input a slang from above list to show its definition: ");
+                System.out.print("------------------------------------------------------"
+                    + "\nInput a slang from above list to show its definition: ");
                 input = sc.nextLine();
                 while (slangList.get(input.toUpperCase()) == null) {
                     System.out.print("Wrong input.\nPlease type in again: ");
                     input = sc.nextLine();
                 }
-                System.out.println("Definition: " + slangList.get(input.toUpperCase()));
+                System.out.println("Definition: " + this.slangList.get(input.toUpperCase()));
             }
-            System.out.print("Do you want to search more? (Y/N): ");
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to search more? (Y/N): ");
+            choice = sc.nextLine().toUpperCase();
+        }
+    }
+
+    public void searchByDefinition(Scanner sc) {
+        String choice = "Y";
+        while (choice.equals("Y")) {
+            System.out.print("-------------------------"
+                + "\nInput a definition to search: ");
+            String input = sc.nextLine().toLowerCase();
+            TreeMap<String, String> found = new TreeMap<String, String>();
+            Set<String> wordSet = this.slangList.keySet();
+            ArrayList<String> wordArray = new ArrayList<String>(wordSet);
+            for (int i = 0; i < this.slangList.size(); ++i)
+                if (this.slangList.get(wordArray.get(i)).toLowerCase().startsWith(input))
+                    found.put(this.slangList.get(wordArray.get(i)), wordArray.get(i));
+            if (found.size() == 0)
+                System.out.println("------------------"
+                    + "\nDefinition not found");
+            else {
+                System.out.println("---------------"
+                    + "\nFound definition:");
+                Set<String> defSet = found.keySet();
+                ArrayList<String> defArray = new ArrayList<String>(defSet);
+                for (int i = 0; i < found.size(); ++i)
+                    System.out.println((i + 1) + ". " + defArray.get(i));
+                System.out.print("--------------------------------------------------"
+                    + "\nInput a number from above list to show its slang: ");
+                input = sc.nextLine();
+                while (defArray.get(Integer.parseInt(input) - 1) == null) {
+                    System.out.print("Wrong input.\nPlease type in again: ");
+                    input = sc.nextLine();
+                }
+                System.out.println("Slang: " + found.get(defArray.get(Integer.parseInt(input) - 1)));
+            }
+            System.out.print("-----------------------------------"
+                    + "\nDo you want to search more? (Y/N): ");
             choice = sc.nextLine().toUpperCase();
         }
     }

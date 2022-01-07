@@ -5,20 +5,21 @@ public class MainMenu {
         Scanner sc = new Scanner(System.in);
         Features ft = new Features(sc);
         while (true) {
-            System.out.println("Slang Dictionary"
-                    + "\n----------------"
-                    + "\n1. Search by slang word"
-                    + "\n2. Search by definition"
-                    + "\n3. Show slang search history"
-                    + "\n4. Add a slang word"
-                    + "\n5. Edit a slang word"
-                    + "\n6. Delete a slang word"
-                    + "\n7. Reset default slang words list"
-                    + "\n8. On this day slang word (random)"
-                    + "\n9. Quiz (random slang)"
-                    + "\n10. Quiz (random definition)"
-                    + "\n11. Quit"
-                    + "\n----------------");
+            System.out.println("\n/------------------------------------\\"
+                    + "\n|          Slang Dictionary          |"
+                    + "\n\\------------------------------------/"
+                    + "\n| 1. Search by slang word            |"
+                    + "\n| 2. Search by definition            |"
+                    + "\n| 3. Show slang search history       |"
+                    + "\n| 4. Add a slang word                |"
+                    + "\n| 5. Edit a slang word               |"
+                    + "\n| 6. Delete a slang word             |"
+                    + "\n| 7. Reset default slang words list  |"
+                    + "\n| 8. On this day slang word (random) |"
+                    + "\n| 9. Quiz (random slang)             |"
+                    + "\n| 10. Quiz (random definition)       |"      
+                    + "\n| 11. Quit                           |"
+                    + "\n/------------------------------------\\");
             System.out.print("Choose your option by type in the number: ");
             String option = sc.nextLine();
             try {
@@ -28,7 +29,7 @@ public class MainMenu {
                         ft.searchBySlang(sc);
                         break;
                     case 2:
-                        // TODO: implement search by definition
+                        ft.searchByDefinition(sc);
                         break;
                     case 3:
                         // TODO: implement show slang search by history
@@ -63,7 +64,6 @@ public class MainMenu {
                         continue;
                 }
             } catch (Exception e) {
-                System.out.print(e);
                 System.out.print("Wrong input.\nPlease type in again: ");
             }
         }
