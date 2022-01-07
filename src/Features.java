@@ -382,6 +382,47 @@ public class Features {
         }
     }
 
+    public void resetSlangList(Scanner sc) {
+        String path = "slang.txt";
+        System.out.println(
+                "Input path for slang.txt (if left blank please press Enter and the app'll use the same path with the app): ");
+        while (true) {
+            String temp = sc.nextLine();
+            if (temp != "")
+                path = temp;
+            try {
+                FileInputStream fis = new FileInputStream(path);
+                fis.close();
+                break;
+            } catch (FileNotFoundException e) {
+                System.out.print("Can't find slang.txt. Please input the path again: ");
+            } catch (IOException e) {
+            }
+        }
+        try {
+            this.slangList = new TreeMap<String, String>();
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+            String line = br.readLine();
+            String word;
+            String meaning;
+            while (line != null) {
+                word = line.substring(0, line.indexOf('`'));
+                meaning = line.substring(line.indexOf('`') + 1, line.length());
+                this.slangList.put(word, meaning);
+                line = br.readLine();
+            }
+            br.close();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("indexed-slang.txt"));
+            oos.writeObject(this.slangList);
+            oos.close();
+            System.out.println("Slang list resetted successfully!");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        } catch (IOException e) {
+            System.out.println("Error while reading file.");
+        }
+    }
+
     public void writeSearchHistory() {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("history.txt"));

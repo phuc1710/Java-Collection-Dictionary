@@ -44,7 +44,7 @@ public class MainMenu {
                         ft.deleteSlang(sc);
                         break;
                     case 7:
-                        // TODO: implement reset default slang words list
+                        ft.resetSlangList(sc);
                         break;
                     case 8:
                         // TODO: implement on this day slang word (random)
